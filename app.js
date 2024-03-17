@@ -1,5 +1,5 @@
-const questiondisplay = document.querySelector('#questions')
-const answerdisplay = document.querySelector('#answer')
+const questionDisplay = document.querySelector('#questions')
+const answerDisplay = document.querySelector('#answer')
 
 const questions = [
 {
@@ -75,38 +75,117 @@ const questions = [
             credit: "Photo by Shane Kong on Unsplash",
         }
     ]
-},
-{
-    id: 3,
-    text: "How many people are here currently?",
-    answers: [
-        {
-            text: "It's just me",
-            image: "https://images.unsplash.com/photo-1542029001094-3396a824ba27?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            alt: "A single chair",
-            credit: "Photo by Markus Spiske on Unsplash",
-        },
-        {
-            text: "Myself and a friend",
-            image: "https://images.unsplash.com/photo-1581994574720-f60299904853?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            alt: "A table for two at a restaturant",
-            credit: "Photo by Evelyn Semenyuk on Unsplash",
-        },
-        {
-            text: "A small gathering of friends",
-            image: "https://images.unsplash.com/photo-1529903384028-929ae5dccdf1?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            alt: "Four women sitting on a bench next to a dog",
-            credit: "Photo by Chris Murray on Unsplash",
-        },
-        {
-            text: "A large group",
-            image: "https://images.unsplash.com/photo-1581954548122-4dff8989c0f7?q=80&w=1530&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            alt: "Many people at a table for a dinner party",
-            credit: "Photo by Sebastian Coman Photography on Unsplash",
-        }
-    ]
 }
 ]
+
+const answers = [
+    {
+        combination: ["Yes", "Whiskey", "Sour"],
+        text: "Whiskey Sour",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Whiskey", "Sweet"],
+        text: "Mint Julep",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Whiskey", "Bitter"],
+        text: "Old Fashioned",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Whiskey", "Spicy"],
+        text: "Spicy Bourbon Sidecar",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Vodka", "Sour"],
+        text: "Lemon Drop",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Vodka", "Sweet"],
+        text: "Cape Codder/Vodka Cranberry",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Vodka", "Bitter"],
+        text: "Espresso Martini",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Vodka", "Spicy"],
+        text: "Bloody Mary",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Gin", "Sour"],
+        text: "Tom Collins",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Gin", "Sweet"],
+        text: "Bramble",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Gin", "Bitter"],
+        text: "Negroni",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Gin", "Spicy"],
+        text: "Bee Sting",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Rum", "Sour"],
+        text: "Lime Daquiri",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Rum", "Sweet"],
+        text: "Hurricane, This is Gentleman Gator's favorite",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Rum", "Bitter"],
+        text: "Rumpari",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["Yes", "Rum", "Spicy"],
+        text: "Spiced Rum Mojito",
+        image: "",
+        alt: ""
+    },
+    {
+        combination: ["No"],
+        text: "",
+        image: "",
+        alt: ""
+    }
+]
+// need to have a default answer to compensate for lack of combination data
+
+const unansweredQuestions = []
+const chosenAnswers = []
 
 const populateQuestions = () => {
     questions.forEach(question => {
@@ -114,34 +193,107 @@ const populateQuestions = () => {
         titleBlock.id = question.id
         titleBlock.classList.add('title-block')
         const titleHeading = document.createElement('h2')
-        titleHeading.textContent = question.text 
+        titleHeading.textContent = question.text
         titleBlock.append(titleHeading)
-        questiondisplay.append(titleBlock)
+        questionDisplay.append(titleBlock)
 
         const answersBlock = document.createElement('div')
-        answersBlock.id = quesition.id + "-questions"
+        answersBlock.id = question.id + "-questions"
         answersBlock.classList.add('answer-options')
 
-        question.answers.forEach(answer => { const answerBlock = document.createElement('div')})
-        answerBlock.classList.add('answer-block')
-        answerBlock.addEventListener('click', handleClick)
-        const answerImage = document.createElement('img')
-        answerImage.setAttribute('src', answer.image)
-        answerImage.setAttribute('alt', answer.alt)
+        unansweredQuestions.push(question.id)
 
-        const answerTitle = document.createElement('h3')
-        answerTitle.textContent = answer.text 
+        question.answers.forEach(answer => {
+            const answerBlock = document.createElement('div')
+            answerBlock.classList.add('answer-block')
+            answerBlock.addEventListener('click', () => handleClick(question.id, answer.text))
+            const answerImage = document.createElement('img')
+            answerImage.setAttribute('src', answer.image)
+            answerImage.setAttribute('alt', answer.alt)
 
+            const answerTitle = document.createElement('h3')
+            answerTitle.textContent = answer.text
 
-        answerBlock.append(answerImage, answerTitle)
-        
+            const answerInfo = document.createElement('p')
+            const imageLink = document.createElement('a')
+            imageLink.setAttribute('href', answer.image)
+            imageLink.textContent = answer.credit
+            const sourceLink = document.createElement('a')
+            sourceLink.textContent = 'Unsplash'
+            sourceLink.setAttribute('src', 'https://www.unsplash.com')
+            answerInfo.append(imageLink, ' to ', sourceLink)
+
+            answerBlock.append(answerImage, answerTitle, answerInfo)
+
+            answersBlock.append(answerBlock)
+        })
+
+        questionDisplay.append(answersBlock)
 
     })
-
-    questiondisplay.append(answersBlock)
 }
 populateQuestions()
 
-const handleClick = () => {
-    console.log('clicked')
+const handleClick = (questionId, chosenAnswer) => {
+    if (unansweredQuestions.includes(questionId))
+    chosenAnswers.push(chosenAnswer)
+    const itemToRemove = unansweredQuestions.indexOf(questionId)
+
+    if (itemToRemove > -1) {
+        unansweredQuestions.splice(itemToRemove, 1)
+    }
+    console.log(chosenAnswers)
+    console.log(unansweredQuestions)
+
+    disableQuestionBlock(questionId, chosenAnswer)
+    const lowestQuestionId = Math.min(...unansweredQuestions)
+    location.href = '#' + lowestQuestionId
+
+    if (!unansweredQuestions.length) {
+        location.href = '#answer'
+        showAnswer()
+    }
+}
+
+const showAnswer = () => {
+    let result
+    answers.forEach(answer => {
+        if (
+            chosenAnswers.includes(answer.combination[0]) +
+            chosenAnswers.includes(answer.combination[1]) +
+            chosenAnswers.includes(answer.combination[2])
+        ) {
+            result = answer
+            return
+        } else if (!result) {
+            //first answer object is default
+            result = answers[0]
+        }
+    })
+
+    const answerBlock = document.createElement('div')
+    answerBlock.classList.add('result-block')
+    const answerTitle = document.createElement('h3')
+    answerTitle.textContent = result.text
+    const answerImage = document.createElement('img')
+    answerImage.setAttribute('src', result.image)
+    answerImage.setAttribute('alt', result.alt)
+
+    answerBlock.append(answerTitle, answerImage)
+
+    answerDisplay.append(answerBlock)
+
+    const allAnswerBlocks = document.querySelectorAll('.answer-block')
+    Array.from(allAnswerBlocks).forEach(answerBlock => answerBlock.replaceWith(answerBlock.cloneNode(true)))
+
+}
+
+const disableQuestionBlock = (questionId, chosenAnswer) => {
+    const currentQuestionBlock = document.getElementById(questionId + "-questions")
+
+    Array.from(currentQuestionBlock.children).forEach(block => {
+        if (block.children.item(1).innerText !== chosenAnswer) {
+            block.style.opacity = "50%"
+        }
+    })
 }
