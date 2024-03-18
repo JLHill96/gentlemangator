@@ -264,14 +264,14 @@ const showAnswer = () => {
     let result
     answers.forEach(answer => {
         if (
-            chosenAnswers.includes(answer.combination[0]) +
-            chosenAnswers.includes(answer.combination[1]) +
+            chosenAnswers.includes(answer.combination[0]) &
+            chosenAnswers.includes(answer.combination[1]) &
             chosenAnswers.includes(answer.combination[2])
         ) {
             result = answer
             return
         } else if (!result) {
-            result = answers [0]
+            result = answers [16]
         }
     })
 
